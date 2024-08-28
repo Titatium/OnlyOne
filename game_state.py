@@ -1,5 +1,10 @@
 import tkinter as tk
-from world import Building, Room, Town
+from world import Building, Town
+import combat
+import inventory
+import dialogue
+import quests
+import utils
 
 class GameState:
     def __init__(self):
@@ -55,6 +60,7 @@ class GameState:
         """
         Updates the game state based on player actions and events.
         """
+        # 1. Handle Combat:
         if self.combat_target:
             victor = combat.handle_combat_round(self.player, self.combat_target)
             if victor:
@@ -62,11 +68,33 @@ class GameState:
                     self.output += f"You defeated the {self.combat_target.name}!\n"
                     self.current_room.characters.remove(self.combat_target)
                     # Add any rewards or experience gain here
+                    self.player.gain_experience(self.combat_target)  # Example: Gain XP
                 else:
                     self.output += f"You were defeated by the {self.combat_target.name}!\n"
                     # Handle player death or game over here
+                    self.handle_game_over()
                 self.combat_target = None
+
+        # 2. Check for Quest Completion:
         self.check_quest_completion()
+
+        # 3. Handle Turn-Based Events:
+        self.handle_turn_based_events()
+
+        # 4. Update GUI:
+        self.update_gui() 
+
+        # 5. Update Minimap:
+        self.update_minimap() 
+
+        # 6. Update Inventory:
+        self.inventory_display.update() 
+
+        # 7. Update Directional Buttons:
+        self.update_directional_buttons() 
+
+        # 8. Check for Special Room Events:
+        self.handle_room_events()
 
     def get_current_context(self):
         # Determine the context based on the current_room
@@ -104,6 +132,30 @@ class GameState:
         Manages combat interactions between the player and NPCs.
         """
         pass  # Implement combat logic here
+
+    def handle_game_over(self):
+        """
+        Handles game over conditions.
+        """
+        self.output += "Game Over!\n"
+        # Implement game over logic here (e.g., display a game over screen, ask the player to restart)
+        self.update_gui()  # Update the GUI after game over
+
+    def handle_turn_based_events(self):
+        """
+        Handles turn-based events that happen automatically.
+        """
+        # Implement logic for turn-based events here
+        # Example: NPC movement, environmental changes, etc.
+        pass
+
+    def handle_room_events(self):
+        """
+        Handles events specific to the current room.
+        """
+        # Implement logic for room-specific events here
+        # Example: Trigger dialogue, start a quest, initiate combat based on the room
+        pass 
 
     def end_turn(self):
         """
