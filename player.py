@@ -21,11 +21,11 @@ class Player(Character):
             if new_room:
                 game_state.current_room = new_room
                 game_state.player.coordinates = game_state.current_room.coordinates
-                print(game_state.current_room.description)
+                game_state.output += game_state.current_room.description + "\n"
             else:
-                print("You can't go that way.")
+                game_state.output += "You can't go that way.\n"
         else:
-            print("Invalid direction.")
+            game_state.output += "Invalid direction.\n"
 
     def pickup(self, item_name, game_state):
         """
@@ -39,9 +39,9 @@ class Player(Character):
         if item and item.portable:
             inventory.add_to_inventory(self, item)
             game_state.current_room.objects.remove(item)
-            print(f"You picked up the {item.name}.")
+            game_state.output += f"You picked up the {item.name}.\n"
         else:
-            print("You can't take that.")
+            game_state.output += "You can't take that.\n"
 
     def drop(self, item_name, game_state):
         """
@@ -55,9 +55,9 @@ class Player(Character):
         if item:
             inventory.remove_from_inventory(self, item)
             game_state.current_room.objects.append(item)
-            print(f"You dropped the {item.name}.")
+            game_state.output += f"You dropped the {item.name}.\n"
         else:
-            print("You don't have that.")
+            game_state.output += "You don't have that.\n"
 
     def use(self, item_name, game_state):
         """
@@ -72,9 +72,9 @@ class Player(Character):
             if item.use_effect:
                 item.use_effect(game_state)
             else:
-                print(f"You use the {item.name}, but nothing happens.")
+                game_state.output += f"You use the {item.name}, but nothing happens.\n"
         else:
-            print("You can't use that.")
+            game_state.output += "You can't use that.\n"
 
     def talk(self, character_name, game_state):
         """
@@ -90,6 +90,6 @@ class Player(Character):
             if dialogue_tree:
                 game_state.active_dialogue = dialogue_tree
         else:
-            print("There's no one here by that name.")
+            game_state.output += "There's no one here by that name.\n"
 
     # Add other player-specific methods here (e.g., attack, defend, etc.)
