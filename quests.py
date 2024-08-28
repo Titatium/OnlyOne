@@ -15,8 +15,8 @@ def start_quest(game_state, quest):
         quest (Quest): The quest to start.
     """
     game_state.quest_status[quest.name] = quest
-    print(f"You have started the quest: {quest.name}")
-    print(quest.description)
+    game_state.output += f"You have started the quest: {quest.name}\n"
+    game_state.output += quest.description + "\n"
 
 def update_quest_progress(game_state, event):
     """
@@ -32,7 +32,7 @@ def update_quest_progress(game_state, event):
             for objective in quest.objectives:
                 if objective in event:
                     quest.objectives.remove(objective)
-                    print(f"Quest objective completed: {objective}")
+                    game_state.output += f"Quest objective completed: {objective}\n"
                     if not quest.objectives:  # All objectives completed
                         complete_quest(game_state, quest)
                     break
