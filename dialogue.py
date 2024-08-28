@@ -48,7 +48,9 @@ def handle_player_choice(dialogue_tree, choice):
     try:
         choice_index = int(choice) - 1
         if dialogue_tree.make_choice(choice_index):
+            # Print the dialogue text
             print(dialogue_tree.get_current_text())
+            # Print options if available
             options = dialogue_tree.get_options()
             if options:
                 for i, option in options:
@@ -59,5 +61,4 @@ def handle_player_choice(dialogue_tree, choice):
             print("Invalid choice. Please try again.")
     except ValueError:
         print("Invalid input. Please enter a number.")
-
     return dialogue_tree
