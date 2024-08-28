@@ -66,6 +66,11 @@ bread = Object("Bread", "A fresh loaf of bread.", portable=True)
 map_of_the_region = Object("Map", "A map of the region.", portable=True)
 healing_potion = Object("Healing Potion", "A vial of clear liquid that glows faintly.", portable=True, usable=True)
 antitoxin = Object("Antitoxin", "A vial containing a pungent liquid that can cure poison.", portable=True, usable=True)
+glowing_orb = Object("Glowing Orb", "A small orb that emits a soft light, equivalent to a torch.", portable=True, usable=True)
+feather_token = Object("Feather Token", "A small token that can be activated to transform into a large feather that can slow a fall from great heights.", portable=True, usable=True)
+mystic_charm = Object("Mystic Charm", "A small charm that offers a +1 bonus to a skill check once before losing its magic.", portable=True, usable=True)
+elixir_of_health = Object("Elixir of Health", "A vial containing a liquid that cures any disease afflicting the user.", portable=True, usable=True)
+cloak_of_billowing = Object("Cloak of Billowing", "A cloak that dramatically billows at the wearer's command.", portable=True, usable=True)
 
 # Define the characters from WhisperwindStory.txt
 merchant = Character("Merchant", "A jolly merchant selling his wares.", health=10, strength=2, defense=1, inventory=[bread, map_of_the_region], dialogue=[
@@ -77,7 +82,7 @@ merchant = Character("Merchant", "A jolly merchant selling his wares.", health=1
 # Define rooms in The Gilded Tankard (Inn)
 gilded_tankard_common_room = Room(
     name="The Gilded Tankard Common Room",
-    description="You enter the warm and inviting common room of The Gilded Tankard. The air is filled with the sounds of laughter and conversation, and a roaring fire crackles in the hearth.",
+    description="You enter the warm and inviting common room of The Gilded Tankard. The air is filled with the sounds of laughter and conversation, and a roaring fire crackles in the hearth.  A sturdy wooden bar lines one wall, offering a selection of drinks.  A large round table, known as the 'Adventurers' Table', is reserved for those who seek companionship and a chance to share tales.  A bulletin board is filled with notices and advertisements,  a testament to the town's vibrant activity.",
     exits={"out": market_square}, # Exit back to market square
     objects=[
         Object(name="Bar", description="A sturdy wooden bar with a selection of drinks."),
@@ -95,7 +100,7 @@ gilded_tankard_common_room = Room(
 
 gilded_tankard_private_room = Room(
     name="The Gilded Tankard Private Room",
-    description="You enter a cozy private room with a comfortable bed, a small desk, and a window overlooking the market square.",
+    description="You enter a cozy private room with a comfortable bed, a small desk, and a window overlooking the market square.  The room is furnished with a comfortable bed, a small desk with writing materials, and a window that offers a view of the bustling market square.",
     exits={"out": gilded_tankard_common_room},
     objects=[
         Object(name="Bed", description="A comfortable bed with soft blankets."),
@@ -105,7 +110,7 @@ gilded_tankard_private_room = Room(
 
 gilded_tankard_kitchen = Room(
     name="The Gilded Tankard Kitchen",
-    description="You enter the bustling kitchen of The Gilded Tankard. The aroma of roasting meats and simmering stews fills the air.",
+    description="You enter the bustling kitchen of The Gilded Tankard.  The aroma of roasting meats and simmering stews fills the air. A large, wood-fired stove is the heart of the kitchen, where Jorah, the cook, works tirelessly to prepare meals for the inn's guests.  A rack filled with spices and herbs sits near the stove, adding to the warm, inviting atmosphere.",
     exits={"out": gilded_tankard_common_room},
     objects=[
         Object(name="Cooking Stove", description="A large, wood-fired stove used for cooking."),
@@ -123,7 +128,7 @@ gilded_tankard_kitchen = Room(
 # Define the Rootwhistle Apothecary
 rootwhistle_apothecary_shop = Room(
     name="Rootwhistle Apothecary",
-    description="The apothecary is a cozy, one-story building with a thatched roof. Shelves line the walls, laden with jars and bottles of assorted sizes.",
+    description="The apothecary is a cozy, one-story building with a thatched roof. Shelves line the walls, laden with jars and bottles of assorted sizes. The air is filled with the scent of herbs and flowers.  A cabinet filled with dried herbs and spices is a testament to Lily Rootwhistle's extensive knowledge of herbalism, and a shelf filled with glass vials of potions offer a range of remedies for various ailments.",
     exits={"out": market_square},
     objects=[
         Object(name="Herb Cabinet", description="A cabinet filled with dried herbs and spices.", usable=True),
@@ -141,7 +146,7 @@ rootwhistle_apothecary_shop = Room(
 # Define the Whisperwind Chapel
 whisperwind_chapel_main_hall = Room(
     name="Whisperwind Chapel",
-    description="The chapel is a modest stone building with stained glass windows depicting various deities. Inside, it is serene and filled with the gentle light of candles, with an altar at the front and pews arranged for worshippers.",
+    description="The chapel is a modest stone building with stained glass windows depicting various deities. Inside, it is serene and filled with the gentle light of candles.  An altar dedicated to Eldath, the goddess of peace, stands at the front of the chapel, while pews are arranged for worshippers. The chapel is a testament to the town's spiritual diversity and the importance of faith in its residents.",
     exits={"out": market_square},
     objects=[
         Object(name="Altar", description="An altar dedicated to Eldath, the goddess of peace."),
@@ -159,7 +164,7 @@ whisperwind_chapel_main_hall = Room(
 # Define the Ironhand Smithy
 ironhand_smithy_forge = Room(
     name="Ironhand Smithy",
-    description="The smithy is a sturdy stone building with a large, open forge. The rhythmic clang of hammer on an anvil rings out from dawn till dusk.",
+    description="The smithy is a sturdy stone building with a large, open forge.  The rhythmic clang of hammer on an anvil rings out from dawn till dusk. The air is thick with the scent of coal and hot metal, a testament to the hard work of Durnan Ironhand, the master blacksmith.  A large anvil stands in the center of the forge, and the forge itself roars with heat, ready to shape metal into tools, weapons, and armor.",
     exits={"out": market_square},
     objects=[
         Object(name="Anvil", description="A large anvil used for shaping metal."),
@@ -177,7 +182,7 @@ ironhand_smithy_forge = Room(
 # Define the Town Square
 town_square = Room(
     name="Town Square",
-    description="You stand in the Town Square, the heart of Whisperwind. A large oak tree stands in the center, providing shade from the sun.",
+    description="You stand in the Town Square, the heart of Whisperwind. A large oak tree stands in the center, providing shade from the sun. The square is a gathering place for the townsfolk, a place where they come to socialize, celebrate, and discuss the affairs of their community. ",
     exits={"west": market_square, "east": farm_road},
     objects=[
         Object(name="Oak Tree", description="A large oak tree with thick branches that provide shade.")
@@ -194,7 +199,7 @@ town_square = Room(
 # Define the Farm Road
 farm_road = Room(
     name="Farm Road",
-    description="You follow a dirt road that leads out of town towards the surrounding farms. You can see fields of wheat and corn stretching as far as the eye can see.",
+    description="You follow a dirt road that leads out of town towards the surrounding farms. You can see fields of wheat and corn stretching as far as the eye can see.  The road is lined with fields of wheat and corn, a testament to the town's agricultural prosperity. ",
     exits={"west": town_square, "south": forest_edge},
     objects=[
         Object(name="Barleybrew Farm", description="A sprawling farm owned by the Barleybrew family.", usable=True),
@@ -205,7 +210,7 @@ farm_road = Room(
 # Define the Forest Edge
 forest_edge = Room(
     name="Forest Edge",
-    description="You stand at the edge of the Feywood Forest. The air is thick with the scent of pine needles and damp earth. The trees tower above you, their branches reaching towards the sky.",
+    description="You stand at the edge of the Feywood Forest. The air is thick with the scent of pine needles and damp earth. The trees tower above you, their branches reaching towards the sky. The forest's edge is a place of both beauty and danger, where the wild creatures of the Feywood meet the gentle bustle of the town. ",
     exits={"north": farm_road},
     objects=[
         Object(name="Ancient Well", description="An ancient well with a moss-covered stone lid.", usable=True)
@@ -222,7 +227,7 @@ forest_edge = Room(
 # Define the Castle Entrance
 castle_entrance = Room(
     name="Castle Entrance",
-    description="You stand before the imposing entrance to the castle. The stone walls are weathered, but the castle's grandeur remains evident.",
+    description="You stand before the imposing entrance to the castle. The stone walls are weathered, but the castle's grandeur remains evident. A large, wooden gate with iron bars stands as a formidable barrier, guarded by a human sentinel.",
     exits={"south": market_square, "inside": castle_courtyard},
     objects=[
         Object(name="Castle Gate", description="A large, wooden gate with iron bars.")
@@ -238,7 +243,7 @@ castle_entrance = Room(
 # Define the Castle Courtyard
 castle_courtyard = Room(
     name="Castle Courtyard",
-    description="You enter a spacious courtyard surrounded by the castle walls. A well manicured garden lies to the west, and a grand staircase leads to the main entrance.",
+    description="You enter a spacious courtyard surrounded by the castle walls. A well manicured garden lies to the west, and a grand staircase leads to the main entrance. The courtyard is a testament to the castle's history and the town's commitment to order and safety. ",
     exits={"out": castle_entrance},
     objects=[
         Object(name="Well", description="A well in the center of the courtyard, its water clear and inviting."),
@@ -257,7 +262,7 @@ castle_courtyard = Room(
 # Define the Castle Throne Room
 castle_throne_room = Room(
     name="Castle Throne Room",
-    description="You enter a grand room with a massive throne at the far end. The walls are adorned with tapestries depicting the history of Whisperwind.",
+    description="You enter a grand room with a massive throne at the far end. The walls are adorned with tapestries depicting the history of Whisperwind. The throne room is a symbol of authority, where the mayor and council meet to make decisions that affect the town.",
     exits={"out": castle_courtyard},
     objects=[
         Object(name="Throne", description="A massive throne made of polished oak, adorned with carvings of mythical creatures.")
@@ -267,7 +272,7 @@ castle_throne_room = Room(
 # Define the Castle Barracks
 castle_barracks = Room(
     name="Castle Barracks",
-    description="You enter a large, spartan room with rows of beds and a training area. The air is thick with the scent of sweat and leather.",
+    description="You enter a large, spartan room with rows of beds and a training area. The air is thick with the scent of sweat and leather. The barracks are a place for the town guard to rest and train, preparing for any threats that may come. ",
     exits={"out": castle_courtyard},
     objects=[
         Object(name="Training Dummies", description="Training dummies used for combat practice.")
