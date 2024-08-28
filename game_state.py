@@ -1,5 +1,6 @@
 import tkinter as tk
 from world import Building
+from world import Room # Import Room from world.py
 
 class GameState:
     def __init__(self):
