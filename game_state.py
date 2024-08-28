@@ -8,12 +8,24 @@ class GameState:
         self.combat_target = None  # Character the player is fighting (or None)
         self.active_dialogue = None  # DialogueTree for current conversation (or None)
         self.current_context = "world"  # Initially set to "world"
+        self.output = ""
 
     def update(self):
         """
         Updates the game state based on player actions and events.
         """
-        pass  # Implement update logic here
+        if self.combat_target:
+            victor = combat.handle_combat_round(self.player, self.combat_target)
+            if victor:
+                if victor == "player":
+                    self.output += f"You defeated the {self.combat_target.name}!\n"
+                    self.current_room.characters.remove(self.combat_target)
+                    # Add any rewards or experience gain here
+                else:
+                    self.output += f"You were defeated by the {self.combat_target.name}!\n"
+                    # Handle player death or game over here
+                self.combat_target = None
+        self.check_quest_completion()
 
     def get_current_context(self):
         # Determine the context based on the current_room
@@ -37,12 +49,14 @@ class GameState:
             return building.rooms  # Display rooms within the building
         elif context == "room":
             return [self.current_room]  # Only display the current room
-    
+
     def check_quest_completion(self):
         """
         Checks if any quests have been completed and triggers rewards.
         """
-        pass  # Implement quest completion check here
+        for quest_name, quest in self.quest_status.items():
+            if not quest.completed and not quest.objectives:
+                quests.complete_quest(self, quest)
 
     def handle_combat(self):
         """
@@ -67,6 +81,7 @@ class GameState:
         self.combat_target = None  # Character the player is fighting (or None)
         self.active_dialogue = None  # DialogueTree for current conversation (or None)
         self.current_context = "world"  # Initially set to "world"
+        self.output = ""
 
     def load_game_data(self):
         # Load world data from world.py
@@ -83,3 +98,20 @@ class GameState:
         self.update_gui()
         self.update_minimap()
         self.update_directional_buttons()
+
+    def get_output(self):
+        return self.output
+
+    def update_gui(self):
+        # Update console area with game output
+        self.console.insert(tk.END, self.output)
+        self.output = ""
+
+        # Update HUD
+        self.hud.update()
+
+        # Update minimap
+        self.minimap.update()
+
+        # Update inventory
+        self.inventory_display.update()
