@@ -1,5 +1,5 @@
 import tkinter as tk
-from PIL import Image, ImageTk  # Use Pillow (PIL fork) for image handling
+from PIL import Image, ImageTk # Import ImageTk from PIL
 
 # Import your game logic modules
 import world
