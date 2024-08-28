@@ -64,8 +64,8 @@ class Character:
 # Example of creating a simple world
 def create_world():
     # Create rooms within a building
-    entrance_hall = Room("Entrance Hall", "...", coordinates=(1, 1)) 
-    library = Room("Library", "...", coordinates=(2, 1))
+    entrance_hall = Room("Entrance Hall", "...", coordinates=(1, 1), dimensions=(5, 3))  # Example: 5x3 room
+    library = Room("Library", "...", coordinates=(6, 1), dimensions=(4, 3))  # Example: 4x3 room
     # ... (set exits for rooms)
 
     # Create a building
