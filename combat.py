@@ -1,6 +1,5 @@
 import random
 
-
 def calculate_attack(attacker, defender):
     """Calculates the attack damage based on attacker's strength and defender's defense."""
     base_damage = attacker.strength
@@ -12,11 +11,9 @@ def calculate_attack(attacker, defender):
 
     return final_damage
 
-
 def apply_damage(target, damage):
     """Reduces a character's health based on the calculated damage."""
     target.health -= damage
-
 
 def check_for_victory(player, opponent):
     """Determines if either the player or the opponent has won the combat encounter."""
@@ -26,7 +23,6 @@ def check_for_victory(player, opponent):
         return "player"  # Player wins
     else:
         return None  # Combat continues
-
 
 def handle_combat_round(player, opponent):
     """Manages a single round of combat between the player and an opponent."""
