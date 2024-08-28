@@ -46,19 +46,8 @@ def complete_quest(game_state, quest):
         quest (Quest): The quest to complete.
     """
     quest.completed = True
-    print(f"Quest completed: {quest.name}!")
+    game_state.output += f"Quest completed: {quest.name}!\n"
     for reward in quest.rewards:
         # Grant rewards to the player (add items to inventory, increase experience, etc.)
         # ... implementation depends on the type of reward
-        print(f"You received: {reward}")
-
-def check_quest_completion(game_state):
-    """
-    Checks if any active quests have been completed.
-
-    Args:
-        game_state (GameState): The current game state.
-    """
-    for quest_name, quest in game_state.quest_status.items():
-        if not quest.completed and not quest.objectives:
-            complete_quest(game_state, quest)
+        game_state.output += f"You received: {reward}\n"
