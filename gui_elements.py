@@ -56,6 +56,44 @@ class Minimap:
         player_x_scaled, player_y_scaled = player_x * scale_factor + translation[0], player_y * scale_factor + translation[1]
         self.canvas.create_oval(player_x_scaled - 5, player_y_scaled - 5, player_x_scaled + 5, player_y_scaled + 5, fill="red")  # Example: draw a red circle for the player
 
+    def calculate_minimap_scaling(self, current_context, locations_to_display):
+        minimap_width = self.canvas.winfo_width()
+        minimap_height = self.canvas.winfo_height()
+
+        # Calculate the maximum dimensions of the locations
+        max_x = max(location.coordinates[0] for location in locations_to_display)
+        max_y = max(location.coordinates[1] for location in locations_to_display)
+        if isinstance(location, Building):
+            max_x += location.dimensions[0]
+            max_y += location.dimensions[1]
+        elif isinstance(location, Town):
+            max_x += location.dimensions[0]
+            max_y += location.dimensions[1]
+
+        # Determine the scale factor
+        if current_context == "world":
+            world_width, world_height = self.game_state.world.dimensions
+            scale_factor = min(minimap_width / world_width, minimap_height / world_height)
+        elif current_context == "town":
+            town = self.game_state.current_room.town
+            town_width, town_height = town.dimensions
+            scale_factor = min(minimap_width / town_width, minimap_height / town_height)
+        elif current_context == "building":
+            building = self.game_state.current_room.building
+            building_width, building_height = building.dimensions
+            scale_factor = min(minimap_width / building_width, minimap_height / building_height)
+        elif current_context == "room":
+            room_width, room_height = self.game_state.current_room.dimensions
+            scale_factor = min(minimap_width / room_width, minimap_height / room_height)
+
+        # Calculate translation to center the map (optional)
+        translation = (
+            (minimap_width - scale_factor * max_x) // 2,
+            (minimap_height - scale_factor * max_y) // 2
+        )
+
+        return scale_factor, translation
+
 class InventoryDisplay:
     def __init__(self, master, player):
         self.master = master
