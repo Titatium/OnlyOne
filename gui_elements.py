@@ -34,6 +34,25 @@ class Minimap:
         # Draw the map and player location
         # ... (Implementation depends on your map data structure and how you want to represent it visually)
 
+        # Get the rooms or locations to display based on the context
+        locations_to_display = self.game_state.get_locations_for_minimap(current_context)
+
+        # Draw the map elements (rooms, buildings, etc.) on the canvas
+        for location in locations_to_display:
+            x, y = location.coordinates  # Assuming each location has coordinates
+            x_scaled, y_scaled = x * scale_factor + translation[0], y * scale_factor + translation[1]
+            if isinstance(location, Room):
+                self.canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor, y_scaled + scale_factor, fill="gray")  # Example: draw a gray square for each room
+            elif isinstance(location, Building):
+                self.canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor * location.dimensions[0], y_scaled + scale_factor * location.dimensions[1], fill="lightblue")  # Example: draw a lightblue rectangle for buildings
+            elif isinstance(location, Town):
+                self.canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor * location.dimensions[0], y_scaled + scale_factor * location.dimensions[1], fill="lightgreen")  # Example: draw a lightgreen rectangle for towns
+
+        # Draw the player's location marker
+        player_x, player_y = self.game_state.player.coordinates
+        player_x_scaled, player_y_scaled = player_x * scale_factor + translation[0], player_y * scale_factor + translation[1]
+        self.canvas.create_oval(player_x_scaled - 5, player_y_scaled - 5, player_x_scaled + 5, player_y_scaled + 5, fill="red")  # Example: draw a red circle for the player
+
 class InventoryDisplay:
     def __init__(self, master, player):
         self.master = master
