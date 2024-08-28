@@ -1,11 +1,12 @@
 from world import Character
 
 class Player(Character):
-    def __init__(self, name, description, health, strength, defense):
-        super().__init__(name, description, health, strength, defense)
+    def __init__(self, name="Player", description="You are an adventurer, ready to explore the world.", health=10, strength=2, defense=1, inventory=None, dialogue=None, coordinates=(0, 0)):
+        super().__init__(name, description, health, strength, defense, inventory, dialogue)
         self.experience = 0
         self.level = 1
         self.skills = {}  # Dictionary to store player skills (e.g., "sword fighting": 5)
+        self.coordinates = coordinates  # Initialize player coordinates
 
     def move(self, direction, game_state):
         """
