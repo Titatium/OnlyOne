@@ -1,3 +1,6 @@
+import tkinter as tk
+from world import Building
+
 class GameState:
     def __init__(self):
         self.player = None  # Will be set to the Player instance
