@@ -1,5 +1,6 @@
 class GameState:
     def __init__(self):
+        # ...
         self.player = None  # Will be set to the Player instance
         self.world = None  # Will be set to the World/Map instance
         self.current_room = None  # Will be set to the starting room
@@ -9,6 +10,43 @@ class GameState:
         self.active_dialogue = None  # DialogueTree for current conversation (or None)
         self.current_context = "world"  # Initially set to "world"
         self.output = ""
+        self.console = None  # Will be set by main.py
+        self.hud = None  # Will be set by main.py
+        self.minimap = None  # Will be set by main.py
+        self.inventory_display = None  # Will be set by main.py
+
+    def load_game_data(self):
+        # Load world data from world.py
+        self.world = world.my_world
+
+        # Create player character
+        self.player = player.Player()
+
+        # Set initial room
+        self.current_room = self.world.starting_room
+        self.player.coordinates = self.current_room.coordinates  # Initialize player coordinates
+
+        # Update GUI elements with initial game state
+        self.update_gui()
+        self.update_minimap()
+        self.update_directional_buttons()
+
+    def get_output(self):
+        return self.output
+
+    def update_gui(self):
+        # Update console area with game output
+        self.console.insert(tk.END, self.output)
+        self.output = ""
+
+        # Update HUD
+        self.hud.update()
+
+        # Update minimap
+        self.minimap.update()
+
+        # Update inventory
+        self.inventory_display.update()
 
     def update(self):
         """
@@ -70,48 +108,3 @@ class GameState:
         """
         self.turn_counter += 1
         # Implement turn-based event handling here (e.g., NPC actions)
-
-    def __init__(self):
-        # ...
-        self.player = None  # Will be set to the Player instance
-        self.world = None  # Will be set to the World/Map instance
-        self.current_room = None  # Will be set to the starting room
-        self.turn_counter = 0
-        self.quest_status = {}  # Dictionary to track quest progress
-        self.combat_target = None  # Character the player is fighting (or None)
-        self.active_dialogue = None  # DialogueTree for current conversation (or None)
-        self.current_context = "world"  # Initially set to "world"
-        self.output = ""
-
-    def load_game_data(self):
-        # Load world data from world.py
-        self.world = world.my_world
-
-        # Create player character
-        self.player = player.Player()
-
-        # Set initial room
-        self.current_room = self.world.starting_room
-        self.player.coordinates = self.current_room.coordinates  # Initialize player coordinates
-
-        # Update GUI elements with initial game state
-        self.update_gui()
-        self.update_minimap()
-        self.update_directional_buttons()
-
-    def get_output(self):
-        return self.output
-
-    def update_gui(self):
-        # Update console area with game output
-        self.console.insert(tk.END, self.output)
-        self.output = ""
-
-        # Update HUD
-        self.hud.update()
-
-        # Update minimap
-        self.minimap.update()
-
-        # Update inventory
-        self.inventory_display.update()
