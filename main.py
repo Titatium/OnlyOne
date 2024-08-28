@@ -1,3 +1,4 @@
+main.py
 import tkinter as tk
 from PIL import Image, ImageTk  # Use Pillow (PIL fork) for image handling
 
@@ -55,21 +56,24 @@ class GameApp:
         # Create labels or other elements to display HUD information
         self.hud_frame = tk.Frame(self.master)
         self.hud_frame.pack()
+        self.hud = gui_elements.HUD(self.hud_frame, self.game_state.player)
 
     def create_inventory_display(self):
         # Create a listbox or similar element to display inventory items
         self.inventory_listbox = tk.Listbox(self.master)
         self.inventory_listbox.pack()
+        self.inventory_display = gui_elements.InventoryDisplay(self.master, self.game_state.player)
 
     def load_game_data(self):
         # Load world data from world.py
-        self.game_state.world = world.load_world()
+        self.game_state.world = world.my_world
 
         # Create player character
         self.game_state.player = player.Player()
 
         # Set initial room
         self.game_state.current_room = self.game_state.world.starting_room
+        self.game_state.player.coordinates = self.game_state.current_room.coordinates  # Initialize player coordinates
 
         # Update GUI elements with initial game state
         self.update_gui()
