@@ -28,6 +28,8 @@ class Room:
         self.objects = objects or []  # List of Object instances
         self.characters = characters or []  # List of Character instances
         self.image = image  # Optional image filename or path
+        self.coordinates = coordinates  # (x, y) coordinates within its parent
+        self.dimensions = dimensions or (1, 1)  # Default to a 1x1 room if dimensions are not provided
 
 class Object:
     def __init__(self, name, description, portable=False, usable=False, use_effect=None):
