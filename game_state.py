@@ -1,6 +1,5 @@
 class GameState:
     def __init__(self):
-        # ...
         self.player = None  # Will be set to the Player instance
         self.world = None  # Will be set to the World/Map instance
         self.current_room = None  # Will be set to the starting room
@@ -14,6 +13,7 @@ class GameState:
         self.hud = None  # Will be set by main.py
         self.minimap = None  # Will be set by main.py
         self.inventory_display = None  # Will be set by main.py
+        self.direction_buttons = None  # Will be set by main.py
 
     def load_game_data(self):
         # Load world data from world.py
@@ -108,3 +108,11 @@ class GameState:
         """
         self.turn_counter += 1
         # Implement turn-based event handling here (e.g., NPC actions)
+
+    def update_directional_buttons(self):
+        # Enable/disable buttons based on available exits in the current room
+        for direction, button in self.direction_buttons.items():
+            if direction in self.current_room.exits and self.current_room.exits[direction]:
+                button.config(state=tk.NORMAL)
+            else:
+                button.config(state=tk.DISABLED)
