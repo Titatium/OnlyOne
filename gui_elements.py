@@ -1,4 +1,5 @@
 import tkinter as tk
+from world import Room, Building, Town # Import all three from world.py
 
 class HUD:
     def __init__(self, master, player):
