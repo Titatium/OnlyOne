@@ -28,6 +28,7 @@ class GameApp:
         self.create_minimap()
         self.create_hud()
         self.create_inventory_display()
+        self.create_directional_buttons()
 
         # Load initial game data (world, player, etc.)
         self.load_game_data()
@@ -72,6 +73,9 @@ class GameApp:
 
         # Update GUI elements with initial game state
         self.update_gui()
+        self.update_minimap()
+        self.update_directional_buttons()
+        
 
     def game_loop(self):
         # Handle player input and game events
@@ -104,8 +108,29 @@ class GameApp:
             self.image_label.config(image=photo)
             self.image_label.image = photo
 
-        # Update minimap
-        self.update_minimap()
+    def update_minimap(self):
+        # Clear the minimap canvas
+        self.minimap_canvas.delete("all")
+
+        # Determine the current context (world, town, or building)
+        current_context = self.game_state.get_current_context()  # You'll need to implement this in game_state.py
+
+        # Get the rooms or locations to display based on the context
+        locations_to_display = self.game_state.get_locations_for_minimap(current_context)
+
+        # Calculate scale factor and translation based on context and minimap size
+        scale_factor, translation = self.calculate_minimap_scaling(current_context)
+
+        # Draw the map elements (rooms, buildings, etc.) on the canvas
+        for location in locations_to_display:
+            x, y = location.coordinates  # Assuming each location has coordinates
+            x_scaled, y_scaled = x * scale_factor + translation[0], y * scale_factor + translation[1]
+            self.minimap_canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor, y_scaled + scale_factor, fill="gray")  # Example: draw a gray square for each location
+
+        # Draw the player's location marker
+        player_x, player_y = self.game_state.player.coordinates
+        player_x_scaled, player_y_scaled = player_x * scale_factor + translation[0], player_y * scale_factor + translation[1]
+        self.minimap_canvas.create_oval(player_x_scaled - 5, player_y_scaled - 5, player_x_scaled + 5, player_y_scaled + 5, fill="red")  # Example: draw a red circle for the player
 
         # Update HUD
         self.update_hud()
@@ -113,13 +138,21 @@ class GameApp:
         # Update inventory display
         self.update_inventory()
 
-    def update_minimap(self):
-        # Clear the minimap canvas
-        self.minimap_canvas.delete("all")
+    def calculate_minimap_scaling(self, current_context):
+        # ... (Implementation to calculate scale factor and translation based on context and minimap size)
 
-        # Draw the map and player location
-        # ... (Implementation depends on your map data structure)
+    def update_directional_buttons(self):
+        # Enable/disable buttons based on available exits in the current room
+        for direction, button in self.direction_buttons.items():
+            if direction in self.game_state.current_room.exits and self.game_state.current_room.exits[direction]:
+                button.config(state=tk.NORMAL)
+            else:
+                button.config(state=tk.DISABLED)
 
+    def handle_direction_click(self, direction):
+        command = f"move {direction}"
+        events.handle_events(command, self.game_state)
+    
     def update_hud(self):
         # Update HUD elements with player information
         # ... (Implementation depends on your HUD design)
