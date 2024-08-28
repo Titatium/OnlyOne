@@ -11,13 +11,13 @@ class HUD:
         # Create labels or other elements to display HUD information
         self.health_label = tk.Label(self.frame, text=f"Health: {self.player.health}")
         self.health_label.pack()
-
-        # Add more labels for other HUD elements as needed (e.g., mana, experience, etc.)
+        self.experience_label = tk.Label(self.frame, text=f"Experience: {self.player.experience}")
+        self.experience_label.pack()
 
     def update(self):
         # Update HUD elements with the latest player information
         self.health_label.config(text=f"Health: {self.player.health}")
-        # Update other labels as needed
+        self.experience_label.config(text=f"Experience: {self.player.experience}")
 
 class Minimap:
     def __init__(self, master, game_state):
@@ -31,11 +31,14 @@ class Minimap:
         # Clear the canvas
         self.canvas.delete("all")
 
-        # Draw the map and player location
-        # ... (Implementation depends on your map data structure and how you want to represent it visually)
+        # Get the current context (world, town, building, room)
+        current_context = self.game_state.get_current_context()
 
         # Get the rooms or locations to display based on the context
         locations_to_display = self.game_state.get_locations_for_minimap(current_context)
+
+        # Calculate scale factor and translation based on context and minimap size
+        scale_factor, translation = self.calculate_minimap_scaling(current_context, locations_to_display)
 
         # Draw the map elements (rooms, buildings, etc.) on the canvas
         for location in locations_to_display:
