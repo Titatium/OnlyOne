@@ -112,5 +112,20 @@ def handle_events(player_input, game_state):
                 # Handle player death or game over here
             game_state.combat_target = None
 
+    # Movement commands
+    elif player_input.startswith("move "):
+        direction = player_input[5:]
+        if direction in game_state.current_room.exits:
+            new_room = game_state.current_room.exits[direction]
+            if new_room:
+                game_state.current_room = new_room
+                # Update player coordinates based on the new room's coordinates
+                game_state.player.coordinates = game_state.current_room.coordinates
+                print(game_state.current_room.description)
+            else:
+                print("You can't go that way.")
+        else:
+            print("Invalid direction.")
+
     # End the turn and trigger any turn-based events
     game_state.end_turn()
