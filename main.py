@@ -121,6 +121,18 @@ class GameApp:
         # Calculate scale factor and translation based on context and minimap size
         scale_factor, translation = self.calculate_minimap_scaling(current_context)
 
+        if current_context == "room":
+            room = self.game_state.current_room
+            room_width, room_height = room.dimensions
+
+            # Draw the room grid
+            for x in range(room_width):
+                for y in range(room_height):
+                    x_scaled, y_scaled = x * scale_factor + translation[0], y * scale_factor + translation[1]
+                    self.minimap_canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor, y_scaled + scale_factor, fill="gray") 
+
+        else:
+        
         # Draw the map elements (rooms, buildings, etc.) on the canvas
         for location in locations_to_display:
             x, y = location.coordinates  # Assuming each location has coordinates
