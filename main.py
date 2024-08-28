@@ -76,7 +76,6 @@ class GameApp:
         self.update_minimap()
         self.update_directional_buttons()
         
-
     def game_loop(self):
         # Handle player input and game events
         self.handle_input()
@@ -155,25 +154,25 @@ class GameApp:
         minimap_height = self.minimap_canvas.winfo_height()
 
         if current_context == "world":
-            world_width, world_height = self.game_state.world.dimensions  # You'll need to add dimensions to the World class
+            world_width, world_height = self.game_state.world.dimensions
             scale_factor = min(minimap_width / world_width, minimap_height / world_height)
         elif current_context == "town":
             town = self.game_state.current_room.town
             town_width, town_height = town.dimensions
             scale_factor = min(minimap_width / town_width, minimap_height / town_height)
         elif current_context == "building":
-            building = self.game_state.current_room.building  # You'll need to add a 'building' attribute to Room if inside a building
+            building = self.game_state.current_room.building
             building_width, building_height = building.dimensions
             scale_factor = min(minimap_width / building_width, minimap_height / building_height)
         elif current_context == "room":
-        room_width, room_height = self.game_state.current_room.dimensions  # Assuming you've added dimensions to Room
-        scale_factor = min(minimap_width / room_width, minimap_height / room_height)
+            room_width, room_height = self.game_state.current_room.dimensions
+            scale_factor = min(minimap_width / room_width, minimap_height / room_height)
 
         # Calculate translation to center the map (optional)
-        translation = ( 
+        translation = (
             (minimap_width - scale_factor * world_width) // 2,
             (minimap_height - scale_factor * world_height) // 2
-        ) 
+        )
 
         return scale_factor, translation
 
