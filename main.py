@@ -1,4 +1,3 @@
-main.py
 import tkinter as tk
 from PIL import Image, ImageTk  # Use Pillow (PIL fork) for image handling
 
@@ -16,15 +15,6 @@ import image_loader
 import utils  # Optional, for helper functions
 
 class GameApp:
-
-    def load_game_data(self):
-    # ...
-    self.game_state.console = self.console
-    self.game_state.hud = self.hud
-    self.game_state.minimap = self.minimap
-    self.game_state.inventory_display = self.inventory_display
-    # ...
-    
     def __init__(self, master):
         self.master = master
         master.title("MUD-Like Game")
@@ -38,7 +28,7 @@ class GameApp:
         self.create_minimap()
         self.create_hud()
         self.create_inventory_display()
-        self.create_directional_buttons()
+        # self.create_directional_buttons()  # You can uncomment this if you want directional buttons
 
         # Load initial game data (world, player, etc.)
         self.load_game_data()
@@ -60,6 +50,7 @@ class GameApp:
         # Create a canvas for the minimap
         self.minimap_canvas = tk.Canvas(self.master, width=200, height=200)  # Adjust size as needed
         self.minimap_canvas.pack()
+        self.minimap = gui_elements.Minimap(self.minimap_canvas, self.game_state)
 
     def create_hud(self):
         # Create labels or other elements to display HUD information
@@ -84,11 +75,17 @@ class GameApp:
         self.game_state.current_room = self.game_state.world.starting_room
         self.game_state.player.coordinates = self.game_state.current_room.coordinates  # Initialize player coordinates
 
+        # Set game state attributes
+        self.game_state.console = self.console
+        self.game_state.hud = self.hud
+        self.game_state.minimap = self.minimap
+        self.game_state.inventory_display = self.inventory_display
+
         # Update GUI elements with initial game state
         self.update_gui()
         self.update_minimap()
-        self.update_directional_buttons()
-        
+        # self.update_directional_buttons()  # You can uncomment this if you want directional buttons
+
     def game_loop(self):
         # Handle player input and game events
         self.handle_input()
@@ -105,6 +102,7 @@ class GameApp:
     def handle_input(self):
         # Get player input from console or other input elements
         player_input = self.console.get("1.0", tk.END).strip()
+        self.console.delete("1.0", tk.END)  # Clear the input field
 
         # Process input using events.py
         events.handle_events(player_input, self.game_state)
@@ -133,23 +131,16 @@ class GameApp:
         # Calculate scale factor and translation based on context and minimap size
         scale_factor, translation = self.calculate_minimap_scaling(current_context)
 
-        if current_context == "room":
-            room = self.game_state.current_room
-            room_width, room_height = room.dimensions
-
-            # Draw the room grid
-            for x in range(room_width):
-                for y in range(room_height):
-                    x_scaled, y_scaled = x * scale_factor + translation[0], y * scale_factor + translation[1]
-                    self.minimap_canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor, y_scaled + scale_factor, fill="gray") 
-
-        else:
-        
         # Draw the map elements (rooms, buildings, etc.) on the canvas
         for location in locations_to_display:
             x, y = location.coordinates  # Assuming each location has coordinates
             x_scaled, y_scaled = x * scale_factor + translation[0], y * scale_factor + translation[1]
-            self.minimap_canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor, y_scaled + scale_factor, fill="gray")  # Example: draw a gray square for each location
+            if isinstance(location, Room):
+                self.minimap_canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor, y_scaled + scale_factor, fill="gray")  # Example: draw a gray square for each room
+            elif isinstance(location, Building):
+                self.minimap_canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor * location.dimensions[0], y_scaled + scale_factor * location.dimensions[1], fill="lightblue")  # Example: draw a lightblue rectangle for buildings
+            elif isinstance(location, Town):
+                self.minimap_canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor * location.dimensions[0], y_scaled + scale_factor * location.dimensions[1], fill="lightgreen")  # Example: draw a lightgreen rectangle for towns
 
         # Draw the player's location marker
         player_x, player_y = self.game_state.player.coordinates
@@ -189,21 +180,21 @@ class GameApp:
 
         return scale_factor, translation
 
-    def update_directional_buttons(self):
-        # Enable/disable buttons based on available exits in the current room
-        for direction, button in self.direction_buttons.items():
-            if direction in self.game_state.current_room.exits and self.game_state.current_room.exits[direction]:
-                button.config(state=tk.NORMAL)
-            else:
-                button.config(state=tk.DISABLED)
+    # def update_directional_buttons(self):
+    #     # Enable/disable buttons based on available exits in the current room
+    #     for direction, button in self.direction_buttons.items():
+    #         if direction in self.game_state.current_room.exits and self.game_state.current_room.exits[direction]:
+    #             button.config(state=tk.NORMAL)
+    #         else:
+    #             button.config(state=tk.DISABLED)
 
-    def handle_direction_click(self, direction):
-        command = f"move {direction}"
-        events.handle_events(command, self.game_state)
+    # def handle_direction_click(self, direction):
+    #     command = f"move {direction}"
+    #     events.handle_events(command, self.game_state)
     
     def update_hud(self):
         # Update HUD elements with player information
-        # ... (Implementation depends on your HUD design)
+        self.hud.update()
 
     def update_inventory(self):
         # Clear the inventory listbox
