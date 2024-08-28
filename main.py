@@ -16,6 +16,15 @@ import image_loader
 import utils  # Optional, for helper functions
 
 class GameApp:
+
+    def load_game_data(self):
+    # ...
+    self.game_state.console = self.console
+    self.game_state.hud = self.hud
+    self.game_state.minimap = self.minimap
+    self.game_state.inventory_display = self.inventory_display
+    # ...
+    
     def __init__(self, master):
         self.master = master
         master.title("MUD-Like Game")
