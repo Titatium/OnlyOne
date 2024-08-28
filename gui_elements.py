@@ -45,16 +45,16 @@ class Minimap:
             x, y = location.coordinates  # Assuming each location has coordinates
             x_scaled, y_scaled = x * scale_factor + translation[0], y * scale_factor + translation[1]
             if isinstance(location, Room):
-                self.canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor, y_scaled + scale_factor, fill="gray")  # Example: draw a gray square for each room
+                self.canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor, y_scaled + scale_factor, fill="gray", outline="black")  # Example: draw a gray square for each room
             elif isinstance(location, Building):
-                self.canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor * location.dimensions[0], y_scaled + scale_factor * location.dimensions[1], fill="lightblue")  # Example: draw a lightblue rectangle for buildings
+                self.canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor * location.dimensions[0], y_scaled + scale_factor * location.dimensions[1], fill="lightblue", outline="black")  # Example: draw a lightblue rectangle for buildings
             elif isinstance(location, Town):
-                self.canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor * location.dimensions[0], y_scaled + scale_factor * location.dimensions[1], fill="lightgreen")  # Example: draw a lightgreen rectangle for towns
+                self.canvas.create_rectangle(x_scaled, y_scaled, x_scaled + scale_factor * location.dimensions[0], y_scaled + scale_factor * location.dimensions[1], fill="lightgreen", outline="black")  # Example: draw a lightgreen rectangle for towns
 
         # Draw the player's location marker
         player_x, player_y = self.game_state.player.coordinates
         player_x_scaled, player_y_scaled = player_x * scale_factor + translation[0], player_y * scale_factor + translation[1]
-        self.canvas.create_oval(player_x_scaled - 5, player_y_scaled - 5, player_x_scaled + 5, player_y_scaled + 5, fill="red")  # Example: draw a red circle for the player
+        self.canvas.create_oval(player_x_scaled - 5, player_y_scaled - 5, player_x_scaled + 5, player_y_scaled + 5, fill="red", outline="black")  # Example: draw a red circle for the player
 
     def calculate_minimap_scaling(self, current_context, locations_to_display):
         minimap_width = self.canvas.winfo_width()
