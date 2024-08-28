@@ -19,6 +19,8 @@ def handle_events(player_input, game_state):
     if player_input.startswith("move "):
         direction = player_input[5:]
         game_state.player.move(direction, game_state)
+        game_state.update_gui()  # Update the GUI after movement
+        game_state.update_directional_buttons()  # Update directional buttons
 
     # Interaction commands
     elif player_input.startswith("take ") or player_input.startswith("pick up "):
