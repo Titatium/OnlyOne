@@ -112,8 +112,8 @@ class GameApp:
         # Clear the minimap canvas
         self.minimap_canvas.delete("all")
 
-        # Determine the current context (world, town, or building)
-        current_context = self.game_state.get_current_context()  # You'll need to implement this in game_state.py
+        # Determine the current context (world, town, building, room)
+        current_context = self.game_state.get_current_context() 
 
         # Get the rooms or locations to display based on the context
         locations_to_display = self.game_state.get_locations_for_minimap(current_context)
@@ -139,7 +139,31 @@ class GameApp:
         self.update_inventory()
 
     def calculate_minimap_scaling(self, current_context):
-        # ... (Implementation to calculate scale factor and translation based on context and minimap size)
+        minimap_width = self.minimap_canvas.winfo_width()
+        minimap_height = self.minimap_canvas.winfo_height()
+
+        if current_context == "world":
+            world_width, world_height = self.game_state.world.dimensions  # You'll need to add dimensions to the World class
+            scale_factor = min(minimap_width / world_width, minimap_height / world_height)
+        elif current_context == "town":
+            town = self.game_state.current_room.town
+            town_width, town_height = town.dimensions
+            scale_factor = min(minimap_width / town_width, minimap_height / town_height)
+        elif current_context == "building":
+            building = self.game_state.current_room.building  # You'll need to add a 'building' attribute to Room if inside a building
+            building_width, building_height = building.dimensions
+            scale_factor = min(minimap_width / building_width, minimap_height / building_height)
+        elif current_context == "room":
+        room_width, room_height = self.game_state.current_room.dimensions  # Assuming you've added dimensions to Room
+        scale_factor = min(minimap_width / room_width, minimap_height / room_height)
+
+        # Calculate translation to center the map (optional)
+        translation = ( 
+            (minimap_width - scale_factor * world_width) // 2,
+            (minimap_height - scale_factor * world_height) // 2
+        ) 
+
+        return scale_factor, translation
 
     def update_directional_buttons(self):
         # Enable/disable buttons based on available exits in the current room
