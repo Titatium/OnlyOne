@@ -35,6 +35,8 @@ class GameState:
         elif context == "building":
             building = self.world.starting_room.town.buildings[0]  # Get the building the player is in
             return building.rooms  # Display rooms within the building
+        elif context == "room":
+            return [self.current_room]  # Only display the current room
     
     def check_quest_completion(self):
         """
