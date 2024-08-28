@@ -1,7 +1,29 @@
+class World:
+    def __init__(self, name, towns=None):
+        self.name = name
+        self.towns = towns or []
+        self.starting_room = None
+
+class Town:
+    def __init__(self, name, coordinates, dimensions, buildings=None, outdoor_rooms=None):
+        self.name = name
+        self.coordinates = coordinates  # (x, y)
+        self.dimensions = dimensions  # (width, height) in squares
+        self.buildings = buildings or []
+        self.outdoor_rooms = outdoor_rooms or []
+
+class Building:
+    def __init__(self, name, coordinates, dimensions, rooms=None):
+        self.name = name
+        self.coordinates = coordinates  # (x, y)
+        self.dimensions = dimensions  # (width, height) in squares
+        self.rooms = rooms or []
+
 class Room:
     def __init__(self, name, description, exits=None, objects=None, characters=None, image=None):
         self.name = name
         self.description = description
+        self.coordinates = coordinates  # (x, y) coordinates within its parent
         self.exits = exits or {}  # Dictionary mapping directions to connected rooms
         self.objects = objects or []  # List of Object instances
         self.characters = characters or []  # List of Character instances
@@ -39,28 +61,26 @@ class Character:
 
 # Example of creating a simple world
 def create_world():
-    # Create rooms
-    forest_path = Room("Forest Path", "A winding path through a dense forest.",
-                       exits={"north": "Clearing", "south": "Cabin"})
-    clearing = Room("Clearing", "A sunlit clearing in the forest.",
-                    exits={"south": "Forest Path"})
-    cabin = Room("Cabin", "A small, cozy cabin in the woods.",
-                 exits={"north": "Forest Path"})
+    # Create rooms within a building
+    entrance_hall = Room("Entrance Hall", "...", coordinates=(1, 1)) 
+    library = Room("Library", "...", coordinates=(2, 1))
+    # ... (set exits for rooms)
 
-    # Create objects
-    sword = Object("Sword", "A sharp, gleaming sword.", portable=True)
-    key = Object("Key", "A rusty old key.", portable=True)
+    # Create a building
+    castle = Building("Castle", (5, 3), (5, 4), [entrance_hall, library])
 
-    # Create characters
-    goblin = Character("Goblin", "A snarling green goblin.", health=20, strength=5, defense=2)
+    # Create outdoor rooms within a town
+    market_square = Room("Market Square", "...", coordinates=(3, 2))
+    town_square = Room("Town Square", "...", coordinates=(7, 5))
 
-    # Place objects and characters in rooms
-    forest_path.objects.append(sword)
-    cabin.objects.append(key)
-    forest_path.characters.append(goblin)
+    # Create a town
+    smallville = Town("Smallville", (10, 15), (10, 8), [castle], [market_square, town_square])
 
-    # Return the starting room (or a reference to the entire world map)
-    return forest_path
+    # Create the world
+    my_world = World("My World", [smallville])
+    my_world.starting_room = market_square
+
+    return my_world
 
 # Function to load the world from a file or other data source (if needed)
 def load_world():
