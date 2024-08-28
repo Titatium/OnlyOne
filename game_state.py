@@ -21,6 +21,8 @@ class GameState:
             return "town"  # Player is in an outdoor room within a town
         elif self.current_room in self.world.starting_room.town.buildings[0].rooms:  # Assuming only one building for now
             return "building"  # Player is inside a building
+        elif isinstance(self.current_room.parent, Building):  # Check if the room is inside a building
+            return "room"  # Player is inside a room within a building
         else:
             return "world"  # Player is in the open world
 
